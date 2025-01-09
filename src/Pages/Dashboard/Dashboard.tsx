@@ -11,6 +11,7 @@ import axios from "axios";
 import { Image } from "@chakra-ui/react"
 import { RxAvatar } from "react-icons/rx";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 interface FormValues {
   firstName: string;
@@ -347,7 +348,7 @@ const Dashboard = () => {
       </div>
 
       {/* Student Accordion */}
-      <Table.Root size="lg" marginTop={10} marginBottom={10}>
+      <Table.Root size="lg" marginTop={10} marginBottom={10} >
         {/* <Table.Header>
         <Table.Row>
           <Table.ColumnHeader>Product</Table.ColumnHeader>
@@ -359,16 +360,16 @@ const Dashboard = () => {
           {data.filter((student) => !student.isDeleted).map((student) => (
 
             <Table.Row key={student.id}>
-              <Table.Cell className="d-flex">
+              <Table.Cell className="d-flex"  colorPalette={"gray"}>
                 {student.profilePicture == "" ? <Icon fontSize="3em" margin={3}><RxAvatar /></Icon> : <Image src={student.profilePicture}
                   alt={`${student.lastName}, ${student.firstName} profile picture`}
                   width="5em"
                   padding={3}
                 />}
 
-
-                {student.lastName}, {student.firstName}
-
+                <Link to={`/student/${student.id}`}>
+                  {student.lastName}, {student.firstName}
+                </Link>
 
 
                 <IconButton onClick={() => removeStudent(student.id)}><FaRegTrashAlt /></IconButton>

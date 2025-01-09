@@ -13,8 +13,8 @@ interface Student {
   userId: number,
   firstName: string,
   lastName: string,
-  SSId: number,
-  DOB: number,
+  ssId: number,
+  Dob: number,
   gender: string,
   primaryDisability: string,
   primaryContact: string,
@@ -45,18 +45,25 @@ const StudentProfile = () => {
 
   const [data, setData] = useState<Student[]>([])
   const [allGoals, setAllGoals] = useState<Goal[]>([])
+  const [studentSSID, setStudentSSID] = useState(0);
   const [newGoal, setNewGoal] = useState<Goal>({
     id: 0,
-    studentId: 0,
+    studentId: studentSSID,
     description: "",
     areaOfNeed: "",
     measurableAnnualGoal: "",
     baseline: ""
   })
 
-  useEffect(() => {
-    axios
-      .get(BASE_URL + "Student/GetStudentById/" + "14")
+  const changeId  = async () => {
+    await setStudentSSID(Number(data.map(datas => datas.ssId)))
+    console.log(studentSSID)
+    setNewGoal({...newGoal, studentId: studentSSID})
+    console.log(newGoal)
+  }
+
+  const fetchStudentInfo = async () => {
+    await axios.get(BASE_URL + "Student/GetStudentById/" + "14")
       .then((response) => {
         setData(response.data);
         console.log(data);
@@ -66,9 +73,15 @@ const StudentProfile = () => {
         console.log(error);
       });
       fetchGoal()
+      changeId()
+  }
+
+  useEffect(() => {
+    fetchStudentInfo()
   }, [])
 
   const addGoal = () => {
+    setNewGoal({...newGoal, studentId: 14 })
     console.log(newGoal)
     axios
     .post(BASE_URL + "Goals/AddGoal", newGoal)
@@ -77,10 +90,11 @@ const StudentProfile = () => {
   }
   const fetchGoal = () => {
     axios
-    .get(BASE_URL + "Goals/GetGoalsByStudentId/" + "1" )
+    .get(BASE_URL + "Goals/GetGoalsByStudentId/" + studentSSID )
     .then((response) => {
       setAllGoals(response.data)
-      console.log(allGoals)
+      console.log("this is the goals " + allGoals)
+      console.log(data)
     })
     .catch(error => error.message)
   }
@@ -157,10 +171,10 @@ const StudentProfile = () => {
             <h1>{student.lastName}, {student.firstName}</h1>
           </GridItem>
           <GridItem colSpan={2}>
-            <Text> SSID: {student.SSId}</Text>
+            <Text> SSID: {student.ssId}</Text>
           </GridItem>
           <GridItem colSpan={1}>
-            DOB: {student.DOB}
+            DOB: {student.Dob}
           </GridItem>
           <GridItem colSpan={1}>
             Age:
@@ -184,7 +198,7 @@ const StudentProfile = () => {
       ))}
 
       
-        <Table.Root size="sm" variant="outline" marginTop={5}>
+        <Table.Root size="sm" variant={"outline"} striped marginTop={5} colorPalette={'gray'}>
         <Table.ColumnGroup>
           <Table.Column htmlWidth="50%" />
           <Table.Column htmlWidth="40%" />

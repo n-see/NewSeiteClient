@@ -1,6 +1,7 @@
 import { Box, Flex, Text, Image, Stack, Link } from "@chakra-ui/react";
 import { Container } from "react-bootstrap";
-import { FaTwitter, FaYoutube, FaFacebook, FaInstagram } from "react-icons/fa";
+import { FaYoutube, FaFacebook, FaInstagram } from "react-icons/fa";
+import { PiXLogo } from "react-icons/pi";
 import SJCOElogo from "../assets/SJCOElogo.png";
 import CODESTACKlogo from "../assets/CODEHACKlogo.png";
 
@@ -22,7 +23,7 @@ const FooterComponent = () => {
             <Text fontSize="sm" lineHeight="1.6">
             SEITE is managed and maintained by NaN, a department of the Supportive
             Journeys for Communities of Opportunity and Education..{" "}
-              <Link color="white" textDecoration="underline" href="#">
+              <Link color="white" textDecoration="underline" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
                 System Requirements
               </Link>
             </Text>
@@ -49,16 +50,16 @@ const FooterComponent = () => {
               Follow Us On
             </Text>
             <Stack direction="row" justify={{ base: "center", md: "flex-start" }}>
-              <Link href="#" color="white" fontSize="1.5rem">
-                <FaTwitter />
+              <Link href="https://x.com/?lang=en" target="_blank" color="white" fontSize="1.5rem">
+              <PiXLogo />
               </Link>
-              <Link href="#" color="white" fontSize="1.5rem">
+              <Link href="https://www.youtube.com/" target="_blank" color="white" fontSize="1.5rem">
                 <FaYoutube />
               </Link>
-              <Link href="#" color="white" fontSize="1.5rem">
+              <Link href="https://www.facebook.com/" target="_blank" color="white" fontSize="1.5rem">
                 <FaFacebook />
               </Link>
-              <Link href="#" color="white" fontSize="1.5rem">
+              <Link href="https://www.instagram.com/" target="_blank" color="white" fontSize="1.5rem">
                 <FaInstagram />
               </Link>
             </Stack>
@@ -88,19 +89,19 @@ const FooterComponent = () => {
               CodeStack Sites
             </Text>
             <Stack>
-              <Link href="#" color="white" fontSize="sm" textDecoration="none">
+              <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" color="white" fontSize="sm" textDecoration="none">
                 CodeHack
               </Link>
               <Link href="#" color="white" fontSize="sm" textDecoration="none">
                 SEITE
               </Link>
-              <Link href="#" color="white" fontSize="sm" textDecoration="none">
+              <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" color="white" fontSize="sm" textDecoration="none">
                 EdConnect
               </Link>
-              <Link href="#" color="white" fontSize="sm" textDecoration="none">
+              <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" color="white" fontSize="sm" textDecoration="none">
                 Beyond SIETE
               </Link>
-              <Link href="#" color="white" fontSize="sm"textDecoration="none">
+              <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" color="white" fontSize="sm"textDecoration="none">
                 CodeHack Conference
               </Link>
             </Stack>
