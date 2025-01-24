@@ -12,12 +12,13 @@ import { Image } from "@chakra-ui/react"
 import { RxAvatar } from "react-icons/rx";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import moment  from "moment"
 
 interface FormValues {
   firstName: string;
   lastName: string;
   SSID: number;
-  DOB: number;
+  DOB: string;
   gender: string;
   primaryDisability: string;
   primaryPhone: string;
@@ -30,7 +31,7 @@ interface Student {
   firstName: string,
   lastName: string,
   SSId: number,
-  DOB: number,
+  DOB: string,
   gender: string,
   primaryDisability: string,
   primaryContact: string,
@@ -50,7 +51,7 @@ const Dashboard = () => {
     firstName: "",
     lastName: "",
     SSId: 0,
-    DOB: 0,
+    DOB: "",
     gender: "",
     primaryDisability: "",
     primaryContact: "",
@@ -61,6 +62,7 @@ const Dashboard = () => {
     isDeleted: false,
   })
   const [data, setData] = useState<Student[]>([]);
+  const [birthday, setBirthday] = useState("")
 
   const [localS, setLocalS] = useState(() => {
     return localStorage.getItem("UserData") ? JSON.parse(localStorage.getItem("UserData")!) : { userId: 0, publisherName: "" }
@@ -88,6 +90,7 @@ const Dashboard = () => {
 
   const [show, setShow] = useState(false);
   const [totalStudents, setTotalStudents] = useState(0)
+  const [deletedStudents, setDeletedStudents] = useState(0);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -136,16 +139,25 @@ const Dashboard = () => {
     axios.post(BASE_URL + "Student/AddStudent", newStudent)
       .then(res => res.data)
       .catch(error => error.message)
+      
     handleClose()
   }
 
   const removeStudent = (removeId: number) => {
     console.log("remove student")
     setData((oldData) => oldData.map(studentToRemove => studentToRemove.id === removeId ? { ...studentToRemove, isDeleted: true } : studentToRemove))
-    console.log(data)
+    axios.post(BASE_URL + 'Student/DeleteStudent/' + removeId)
+    fetchData()
   }
+
+  const checkDeleted = () => {
+    const [counter, setCounter] = useState(0)
+    // const counterData = data.filter();
+    setDeletedStudents(counter);
+ }
   useEffect(() => {
     setTotalStudents(data.length)
+    // checkDeleted();
   }, [data])
 
 
@@ -166,7 +178,7 @@ const Dashboard = () => {
                   <p>Added Students</p>
                 </div>
                 <div className="col">
-                  <h2>5</h2>
+                  <h2>{deletedStudents}</h2>
                   <p>Removed Students</p>
                 </div>
               </div>
@@ -243,9 +255,12 @@ const Dashboard = () => {
                       })}
                       onChange={(e) => {
                         console.log(e.target.value)
-                        setNewStudent({ ...newStudent, DOB: parseInt(e.target.value) })
-
-                      }
+                        setNewStudent({ ...newStudent, DOB:e.target.value })
+                      //   setBirthday(e.target.value)
+                      //   const formatBirthday = moment(birthday).format("DD/MMY/YYY")
+                      //   console.log(formatBirthday)
+                      //   setNewStudent({ ...newStudent, DOB: formatBirthday })
+                       }
                       }
                     ></Input>
                   </Field>
@@ -358,7 +373,6 @@ const Dashboard = () => {
       </Table.Header> */}
         <Table.Body>
           {data.filter((student) => !student.isDeleted).map((student) => (
-
             <Table.Row key={student.id}>
               <Table.Cell className="d-flex"  colorPalette={"gray"}>
                 {student.profilePicture == "" ? <Icon fontSize="3em" margin={3}><RxAvatar /></Icon> : <Image src={student.profilePicture}
@@ -367,10 +381,12 @@ const Dashboard = () => {
                   padding={3}
                 />}
 
-                <Link to={`/student/${student.id}`}>
+              <Link to={`/student/${student.id}`}>
+                
                   {student.lastName}, {student.firstName}
-                </Link>
+                
 
+            </Link>
 
                 <IconButton onClick={() => removeStudent(student.id)}><FaRegTrashAlt /></IconButton>
 

@@ -16,7 +16,7 @@ import router from './Pages/routes.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Provider>
+    <Provider forcedTheme='light'>
 
       
       <RouterProvider router={router}>
