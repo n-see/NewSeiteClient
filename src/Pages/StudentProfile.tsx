@@ -5,22 +5,19 @@ import {
   DialogCloseTrigger,
   DialogFooter,
   Flex,
-  For,
   Grid,
   GridItem,
   Icon,
   Image,
   Input,
   Link,
-  Stack,
   Table,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Form, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { BASE_URL } from "../constant";
 import { RxAvatar } from "react-icons/rx";
+import { Form, useNavigate, useParams } from "react-router-dom";
 import {
   DialogBody,
   DialogContent,
@@ -30,7 +27,7 @@ import {
   DialogTrigger,
 } from "../components/ui/dialog";
 import { Field } from "../components/ui/field";
-import { PiPersonArmsSpread } from "react-icons/pi";
+import { BASE_URL } from "../constant";
 
 interface Student {
   id: number;
@@ -63,15 +60,15 @@ const StudentProfile = () => {
   const prams = useParams();
 
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const location = useLocation();
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const location = useLocation();
 
   const [data, setData] = useState<Student[]>([]);
   const [allGoals, setAllGoals] = useState<Goal[]>([]);
   const [studentSSID, setStudentSSID] = useState(0);
   const [newGoal, setNewGoal] = useState<Goal>({
     id: 0,
-    studentId: studentSSID,
+    studentId: 0,
     description: "",
     areaOfNeed: "",
     measurableAnnualGoal: "",
@@ -81,25 +78,34 @@ const StudentProfile = () => {
   
 
   const changeId = () => {
-    setStudentSSID(Number(data.map((datas) => datas.ssId)));
+    const studentData = JSON.parse(localStorage.getItem("StudentData")!) 
+    setStudentSSID(Number(studentData.ssId))
     console.log(studentSSID);
     setNewGoal({ ...newGoal, studentId: studentSSID });
     console.log(newGoal);
+    console.log(newGoal 
+    );
     findAge(Number(data.map((age) => age.dob)))
 
   };
 
   const handleDelete = (id:number) => {
-    const [editDelete, setEditDelete] = useState(allGoals.filter(goal => goal.id))
+    const editDelete =(allGoals.filter(goal => goal.id))
     // setEditDelete({...editDelete, isDeleted: true})
     console.log(editDelete)
     axios.put(BASE_URL + "Student/GetStudentById/" + id, editDelete)
   }
 
 
-  const fetchStudentInfo = () => {
-    axios.get(BASE_URL + "Student/GetStudentById/" + prams.id ).then(res => setData(res.data))
-        console.log(data);
+  const fetchStudentInfo = async () => {
+    await axios.get(BASE_URL + "Student/GetStudentById/" + prams.id ).then(
+      res => {setData(res.data)
+      localStorage.setItem("StudentData", JSON.stringify(res.data))
+      }
+    
+    )
+    
+        
         
         
     
@@ -261,6 +267,9 @@ const StudentProfile = () => {
               </Icon>
             ) : (
               <Image
+                marginLeft={"15%"}
+                marginTop={"1rem"}
+                width={"12rem"}
                 src={student.profilePicture}
                 alt={`${student.lastName}, ${student.firstName} profile picture`}
               />

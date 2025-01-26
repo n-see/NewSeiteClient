@@ -4,6 +4,7 @@ html, body {
   font-family: "Roboto", sans-serif;
 
   background-color: #EEF2F4 !important;
+  overflow-x: hidden;
 
 }
 

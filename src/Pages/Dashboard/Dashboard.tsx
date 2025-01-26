@@ -12,7 +12,7 @@ import { Image } from "@chakra-ui/react"
 import { RxAvatar } from "react-icons/rx";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import moment  from "moment"
+// import moment  from "moment"
 
 interface FormValues {
   firstName: string;
@@ -62,7 +62,7 @@ const Dashboard = () => {
     isDeleted: false,
   })
   const [data, setData] = useState<Student[]>([]);
-  const [birthday, setBirthday] = useState("")
+  // const [birthday, setBirthday] = useState("")
 
   const [localS, setLocalS] = useState(() => {
     return localStorage.getItem("UserData") ? JSON.parse(localStorage.getItem("UserData")!) : { userId: 0, publisherName: "" }
@@ -90,7 +90,7 @@ const Dashboard = () => {
 
   const [show, setShow] = useState(false);
   const [totalStudents, setTotalStudents] = useState(0)
-  const [deletedStudents, setDeletedStudents] = useState(0);
+  // const [deletedStudents, setDeletedStudents] = useState(0);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -150,11 +150,11 @@ const Dashboard = () => {
     fetchData()
   }
 
-  const checkDeleted = () => {
-    const [counter, setCounter] = useState(0)
-    // const counterData = data.filter();
-    setDeletedStudents(counter);
- }
+//   const checkDeleted = () => {
+//     const [counter, setCounter] = useState(0)
+//     // const counterData = data.filter();
+//     setDeletedStudents(counter);
+//  }
   useEffect(() => {
     setTotalStudents(data.length)
     // checkDeleted();
@@ -178,7 +178,10 @@ const Dashboard = () => {
                   <p>Added Students</p>
                 </div>
                 <div className="col">
-                  <h2>{deletedStudents}</h2>
+                  <h2>
+                    {/* {deletedStudents} */}
+                    0
+                    </h2>
                   <p>Removed Students</p>
                 </div>
               </div>
