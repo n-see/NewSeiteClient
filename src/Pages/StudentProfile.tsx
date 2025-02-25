@@ -14,7 +14,7 @@ import {
   Table,
   Text
 } from "@chakra-ui/react";
-import axios from "axios";
+import axios, { all } from "axios";
 import { useEffect, useState } from "react";
 import { RxAvatar } from "react-icons/rx";
 import { Form, useNavigate, useParams } from "react-router-dom";
@@ -75,24 +75,27 @@ const StudentProfile = () => {
     baseline: "",
     isDeleted: false
   });
+  const [Age, setAge] = useState(0)
+  useEffect(() => {
+    console.log("Updated Goal: ", newGoal)
+  }, [newGoal])
   
+
+  const [runCode, setRunCode] = useState<Boolean>(false)
 
   const changeId = () => {
     const studentData = JSON.parse(localStorage.getItem("StudentData")!) 
     setStudentSSID(Number(studentData.ssId))
-    console.log(studentSSID);
-    setNewGoal({ ...newGoal, studentId: studentSSID });
-    console.log(newGoal);
-    console.log(newGoal 
-    );
-    findAge(Number(data.map((age) => age.dob)))
-
+    setNewGoal(prevGoal => ({
+      ...prevGoal,
+      studentId: studentData.ssId
+    }));
+    console.log(newGoal)
   };
 
   const handleDelete = (id:number) => {
     const editDelete =(allGoals.filter(goal => goal.id))
     // setEditDelete({...editDelete, isDeleted: true})
-    console.log(editDelete)
     axios.put(BASE_URL + "Student/GetStudentById/" + id, editDelete)
   }
 
@@ -100,42 +103,46 @@ const StudentProfile = () => {
   const fetchStudentInfo = async () => {
     await axios.get(BASE_URL + "Student/GetStudentById/" + prams.id ).then(
       res => {setData(res.data)
-      localStorage.setItem("StudentData", JSON.stringify(res.data))
-      }
-    
-    )
-    
-        
-        
-        
-    
+      localStorage.setItem("StudentData", JSON.stringify(res.data[0]))      
+    }
+    ).finally(() => setRunCode(true))
   };
-  const findAge = (dob:number) => {
-    console.log(dob)
-    const date = new Date();
-    let day = date.getDate();
-    
-    let month = (date.getMonth() +1).toString().padStart(2, '0');
-    let year = date.getFullYear();
-    let currentDate = `${day}${month}${year}`;
-    console.log("this is the date " + currentDate)
-  }
+  function calculateAge(dobString:string) {
+    // Parse the date string into a Date object
+    const birthDate = new Date(dobString);
 
-  const runFunctions = async () => {
-    await fetchStudentInfo();
-    changeId();
-    fetchGoal();
-  }
+    // Validate parsed date
+ 
+
+    // Get today's date
+    const today = new Date();
+
+    // Calculate age
+    let age = today.getFullYear() - birthDate.getFullYear();
+
+    // Adjust if birthday hasn't happened yet this year
+    if (
+        today.getMonth() < birthDate.getMonth() || 
+        (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())
+    ) {
+        age--;
+    }
+
+    setAge(Number(age))
+}
+
+
+  
 
   useEffect(() => {
-    runFunctions();
-    
+    fetchStudentInfo();
+    changeId();
   }, []);
   
 
-  const addGoal = () => {
-    setNewGoal({ ...newGoal, studentId: studentSSID });
-    console.log(newGoal);
+  const addGoal =  () => {
+    changeId()
+    setNewGoal({ ...newGoal, studentId: studentSSID  });
     axios
       .post(BASE_URL + "Goals/AddGoal", newGoal)
       .then((res) => res.data)
@@ -146,11 +153,17 @@ const StudentProfile = () => {
       .get(BASE_URL + "Goals/GetGoalsByStudentId/" + studentSSID)
       .then((response) => {
         setAllGoals(response.data);
-        console.log(allGoals);
-        console.log(data);
       })
       .catch((error) => error.message);
   };
+if(runCode){
+
+  fetchGoal();
+  calculateAge(String(data.map(newData => newData.dob)))
+  setRunCode(false)
+}
+
+
   return (
     <>
       <Container>
@@ -284,7 +297,7 @@ const StudentProfile = () => {
             <Text> SSID: {student.ssId}</Text>
           </GridItem>
           <GridItem colSpan={1}>DOB: {student.dob}</GridItem>
-          <GridItem colSpan={1}>Age:</GridItem>
+          <GridItem colSpan={1}>Age: {Age}</GridItem>
           <GridItem colSpan={1}>Sex: {student.gender}</GridItem>
           <GridItem colSpan={1}>
             Primary Disability: {student.primaryDisability}
@@ -300,7 +313,8 @@ const StudentProfile = () => {
         variant={"outline"}
         striped
         appearance={"light"}
-        marginTop={5}
+        marginTop={10}
+        marginBottom={10}
         // colorPalette={"gray"}
       >
         <Table.ColumnGroup>

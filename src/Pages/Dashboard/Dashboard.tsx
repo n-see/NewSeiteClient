@@ -102,17 +102,14 @@ const Dashboard = () => {
   } = useForm<FormValues>();
 
   const fetchData = () => {
-    console.log(localS + "local")
     axios
       .get(BASE_URL + "Student/GetStudentByUserId/" + localS.userId)
       .then((response) => {
         setData(response.data);
 
       })
-      .catch((error) => {
-        console.log(error);
-      });
-    console.log(data);
+      .catch(
+      );
   };
 
   const checkToken = () => {
@@ -128,14 +125,12 @@ const Dashboard = () => {
     let file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      console.log(reader.result);
       setNewStudent({ ...newStudent, profilePicture: String(reader.result) })
     };
     reader.readAsDataURL(file);
   };
 
   const addStudent = () => {
-    console.log(newStudent)
     axios.post(BASE_URL + "Student/AddStudent", newStudent)
       .then(res => res.data)
       .catch(error => error.message)
@@ -144,7 +139,6 @@ const Dashboard = () => {
   }
 
   const removeStudent = (removeId: number) => {
-    console.log("remove student")
     setData((oldData) => oldData.map(studentToRemove => studentToRemove.id === removeId ? { ...studentToRemove, isDeleted: true } : studentToRemove))
     axios.post(BASE_URL + 'Student/DeleteStudent/' + removeId)
     fetchData()
@@ -257,11 +251,9 @@ const Dashboard = () => {
                         required: "DOB is required",
                       })}
                       onChange={(e) => {
-                        console.log(e.target.value)
                         setNewStudent({ ...newStudent, DOB:e.target.value })
                       //   setBirthday(e.target.value)
                       //   const formatBirthday = moment(birthday).format("DD/MMY/YYY")
-                      //   console.log(formatBirthday)
                       //   setNewStudent({ ...newStudent, DOB: formatBirthday })
                        }
                       }

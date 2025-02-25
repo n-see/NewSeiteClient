@@ -1,8 +1,14 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { Box, Heading, Text, Image, Flex } from "@chakra-ui/react";
 import homepageteach from "../assets/homepageteach.jpg";
+import { useEffect } from "react";
 
 const Homepage = () => {
+
+  // useEffect(() => {
+  //   localStorage.clear();
+  // }, [])
+  
   return (
     <>
    

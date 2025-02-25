@@ -18,10 +18,10 @@ const FooterComponent = () => {
         >
           <Box flex={{ base: "100%", md: "30%" }}>
             <Text fontSize="lg" fontWeight="bold" mb={4}>
-              About SEITE
+              About SIETE
             </Text>
             <Text fontSize="sm" lineHeight="1.6">
-            SEITE is managed and maintained by NaN, a department of the Supportive
+            SIETE is managed and maintained by NaN, a department of the Supportive
             Journeys for Communities of Opportunity and Education..{" "}
               <Link color="white" textDecoration="underline" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
                 System Requirements
@@ -93,7 +93,7 @@ const FooterComponent = () => {
                 CodeHack
               </Link>
               <Link href="#" color="white" fontSize="sm" textDecoration="none">
-                SEITE
+                SIETE
               </Link>
               <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" color="white" fontSize="sm" textDecoration="none">
                 EdConnect

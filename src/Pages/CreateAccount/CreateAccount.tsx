@@ -45,7 +45,6 @@ const CreateAccount = () => {
   const onSubmit = handleSubmit(() => addUser(newUser));
 
   const addUser = (addingUser:{}) => {
-    console.log(addingUser)
     axios
     .post(BASE_URL + "User/AddUsers", addingUser)
     .then(res => res.data)

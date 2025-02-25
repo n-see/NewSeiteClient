@@ -49,7 +49,6 @@ const Login = () => {
   let token = await axiosLogin(userData)
   if (token != null) {
     localStorage.setItem("Token", token);
-    console.log(token);
     await GetLoggedInUser(user.username);
     
   }
@@ -63,9 +62,7 @@ const Login = () => {
         let data = res.data
         outsideData = data.token
         localStorage.setItem("Token", data.token)
-        console.log(res);
     } catch(error) {
-        console.log(error)
     }
     return outsideData
     
@@ -76,7 +73,6 @@ const Login = () => {
   let res = await axios 
   .get(BASE_URL + "User/GetUserByUsername/" + username)
   let userData = res.data;
-      console.log(userData)
       localStorage.setItem("UserData", JSON.stringify(userData) )
 }
 
